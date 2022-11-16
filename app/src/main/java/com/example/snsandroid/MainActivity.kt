@@ -51,6 +51,7 @@ class MainActivity : AppCompatActivity() {
                 if (it.isSuccessful) {
                     Toast.makeText(this, "Authentication suceses.", Toast.LENGTH_SHORT).show()
                     binding.progress.visibility=View.GONE
+                    startActivity(Intent(this, HomeActivity::class.java))
                 } else {
                     binding.progress.visibility=View.GONE
                     Log.w("LoginActivity", "signInWithEmail", it.exception)

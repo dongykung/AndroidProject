@@ -43,8 +43,8 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:layout_marginStart="20dp">
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp">
 
             <EditText
                 android:id="@+id/email_edittext"
@@ -58,8 +58,8 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:layout_marginStart="20dp">
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp">
 
             <EditText
                 android:id="@+id/password_edittext"
@@ -80,6 +80,7 @@
             android:contentDescription="하고 싶은 설명"
             android:text="@string/login"
             android:theme="@style/ButtonStyle" />
+
         <Button
             android:id="@+id/signupbtn"
             android:layout_width="match_parent"
@@ -126,7 +127,6 @@
             android:background="@drawable/btn_signin_twitter"
             android:text="@string/signin_twitter"
             android:textColor="@color/colorWhite" />
-
 
 
     </LinearLayout>
