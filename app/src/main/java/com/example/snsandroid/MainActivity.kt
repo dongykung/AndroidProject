@@ -20,17 +20,19 @@ class MainActivity : AppCompatActivity() {
     var auth: FirebaseAuth? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityMainBinding.inflate(layoutInflater)
+         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         auth = FirebaseAuth.getInstance()
         binding.loginbtn.setOnClickListener{
             var userEmail=binding.emailEdittext.text.toString()
             val password = binding.passwordEdittext.text.toString()
+            binding.progress.visibility=View.VISIBLE
             doLogin(userEmail,password)
         }
         binding.signupbtn.setOnClickListener{
             var userEmail=binding.emailEdittext.text.toString()
             val password = binding.passwordEdittext.text.toString()
+            binding.progress.visibility=View.VISIBLE
             signUp(userEmail,password)
         }
 
@@ -48,7 +50,9 @@ class MainActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { // it: Task<AuthResult!>
                 if (it.isSuccessful) {
                     Toast.makeText(this, "Authentication suceses.", Toast.LENGTH_SHORT).show()
+                    binding.progress.visibility=View.GONE
                 } else {
+                    binding.progress.visibility=View.GONE
                     Log.w("LoginActivity", "signInWithEmail", it.exception)
                     Toast.makeText(this, "Authentication failed.", Toast.LENGTH_SHORT).show()
                 }
@@ -60,8 +64,10 @@ class MainActivity : AppCompatActivity() {
             .addOnCompleteListener(this){
                 if(it.isSuccessful){
                     Toast.makeText(this, "축하합니다 회원가입 완료.", Toast.LENGTH_SHORT).show()
+                    binding.progress.visibility=View.GONE
                 }else {
                     Log.w("LoginActivity", "signInWithEmail", it.exception)
+                    binding.progress.visibility=View.GONE
                     Toast.makeText(this, "Authentication failed.", Toast.LENGTH_SHORT).show()
                 }
             }
