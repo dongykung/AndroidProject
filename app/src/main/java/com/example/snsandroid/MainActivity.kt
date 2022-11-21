@@ -30,21 +30,11 @@ class MainActivity : AppCompatActivity() {
             doLogin(userEmail,password)
         }
         binding.signupbtn.setOnClickListener{
-            var userEmail=binding.emailEdittext.text.toString()
-            val password = binding.passwordEdittext.text.toString()
-            binding.progress.visibility=View.VISIBLE
-            signUp(userEmail,password)
+            startActivity(Intent(this, SignupActivity::class.java))
         }
 
     }
-    fun moveMainPage(user: FirebaseUser?) {
 
-        // User is signed in
-        if (user != null) {
-            Toast.makeText(this, getString(R.string.signin_complete), Toast.LENGTH_SHORT).show()
-
-        }
-    }
     private fun doLogin(userEmail: String, password: String) {
         Firebase.auth.signInWithEmailAndPassword(userEmail, password)
             .addOnCompleteListener(this) { // it: Task<AuthResult!>
@@ -60,20 +50,7 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
-    private fun signUp(userEmail: String, password: String){
-        Firebase.auth.createUserWithEmailAndPassword(userEmail, password)
-            .addOnCompleteListener(this){
-                if(it.isSuccessful){
-                    Toast.makeText(this, "축하합니다 회원가입 완료.", Toast.LENGTH_SHORT).show()
-                    binding.progress.visibility=View.GONE
-                }else {
-                    Log.w("LoginActivity", "signInWithEmail", it.exception)
-                    binding.progress.visibility=View.GONE
-                    Toast.makeText(this, "Authentication failed.", Toast.LENGTH_SHORT).show()
-                }
-            }
 
-    }
 
 
 }
