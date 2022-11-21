@@ -1,6 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
+    <color name="com_facebook_blue">#1877F2</color>
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
