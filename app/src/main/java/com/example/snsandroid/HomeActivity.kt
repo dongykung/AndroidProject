@@ -6,7 +6,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.snsandroid.databinding.ActivityHomeBinding
-import com.example.snsandroid.navigation.DetailViewFragment
 
 
 class HomeActivity: AppCompatActivity() {
