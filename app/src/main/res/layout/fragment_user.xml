@@ -3,19 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal">
+    android:orientation="vertical">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="100dp">
 
         <ImageView
             android:id="@+id/account_iv_profile"
+            tools:src="@drawable/account"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_alignParentLeft="true"
-            android:layout_marginLeft="1dp"
-            tools:src="@drawable/account" />
-
+            />
         <Button
             android:id="@+id/account_btn_follow_signout"
             android:text="@string/follow"
@@ -29,56 +28,57 @@
             android:layout_above="@+id/account_btn_follow_signout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
             <LinearLayout
+                android:gravity="center"
                 android:orientation="vertical"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content">
-
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="@string/post" />
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="@string/count_0" />
             </LinearLayout>
             <LinearLayout
+                android:gravity="center"
                 android:orientation="vertical"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content">
                 <TextView
                     android:text="@string/post"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
                 <TextView
                     android:text="@string/count_0"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
             </LinearLayout>
             <LinearLayout
+                android:gravity="center"
                 android:orientation="vertical"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content">
                 <TextView
                     android:text="@string/post"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
                 <TextView
                     android:text="@string/count_0"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
             </LinearLayout>
 
         </LinearLayout>
     </RelativeLayout>
     <androidx.recyclerview.widget.RecyclerView
-        android:background="@drawable/account"
+        android:background="@+id/account_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
