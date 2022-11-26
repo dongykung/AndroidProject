@@ -4,14 +4,16 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.snsandroid.Navigation.AddPhotoAcitivty
+import com.example.snsandroid.Navigation.*
 import com.example.snsandroid.databinding.ActivityAddPhotoBinding
 import com.example.snsandroid.databinding.ActivityHomeBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class HomeActivity: AppCompatActivity() {
@@ -21,20 +23,24 @@ class HomeActivity: AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.progressBar.visibility = View.VISIBLE
-        binding.bottomNavigation.selectedItemId = R.id.action_home
+
+        val detailViewFragment=DetailViewFragment()
+        supportFragmentManager.beginTransaction().replace(R.id.main_content,detailViewFragment).commit()
+
         ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 1)
 
 
         binding.bottomNavigation.setOnItemSelectedListener {
            when(it.itemId){
                R.id.action_home ->{
-                   println("잘될거야")
+                    val detailViewFragment=DetailViewFragment()
+                   supportFragmentManager.beginTransaction().replace(R.id.main_content,detailViewFragment).commit()
 
                    return@setOnItemSelectedListener true
                }
                R.id.action_search ->{
-                   println("검색")
+                   val gridFragment=GridFragment()
+                   supportFragmentManager.beginTransaction().replace(R.id.main_content,gridFragment).commit()
 
                    return@setOnItemSelectedListener true
                }
@@ -48,13 +54,13 @@ class HomeActivity: AppCompatActivity() {
                    return@setOnItemSelectedListener true
                }
                R.id.action_favorite_alarm ->{
-                   println("좋아요")
-
+                   val alarmFragment=AlarmFragment()
+                   supportFragmentManager.beginTransaction().replace(R.id.main_content,alarmFragment).commit()
                    return@setOnItemSelectedListener true
                }
                R.id.action_account ->{
-                   println("계정")
-
+                   val userFragment=UserFragment()
+                   supportFragmentManager.beginTransaction().replace(R.id.main_content,userFragment).commit()
                    return@setOnItemSelectedListener true
                }
 
@@ -71,3 +77,5 @@ class HomeActivity: AppCompatActivity() {
     }
 
 }
+
+
