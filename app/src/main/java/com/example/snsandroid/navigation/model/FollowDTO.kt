@@ -1,4 +1,4 @@
-package com.example.snsandroid.model
+package com.example.snsandroid.navigation.model
 
 import java.util.HashMap
 
