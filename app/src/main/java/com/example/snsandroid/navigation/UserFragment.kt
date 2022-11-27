@@ -30,7 +30,7 @@ class UserFragment : Fragment(){
     var auth : FirebaseAuth? = null
     var currentUserUid : String? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        fragmentView = LayoutInflater.from(activity).inflate(R.layout.fragment_detail,container,false)
+        fragmentView = LayoutInflater.from(activity).inflate(R.layout.fragment_user,container,false)
         uid = arguments?.getString("destinationUid")
         firestore = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
