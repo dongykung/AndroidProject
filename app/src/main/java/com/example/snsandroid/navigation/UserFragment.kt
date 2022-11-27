@@ -88,11 +88,9 @@ class UserFragment : Fragment(){
                 fragmentView?.account_tv_follower_count?.text = followDTO?.followerCount?.toString()
                 if(followDTO?.followers?.containsKey(currentUserUid!!)){
                     fragmentView?.account_btn_follow_signout?.text = getString(R.string.follow_cancel)
-                    fragmentView?.account_btn_follow_signout?.background?.setColorFilter(ContextCompat.getColor(activity!!,R.color.colorLightGray),PorterDuff.Mode.MULTIPLY)
                 }else{
                     if(uid != currentUserUid){
                         fragmentView?.account_btn_follow_signout?.text = getString(R.string.follow)
-                        fragmentView?.account_btn_follow_signout?.background?.colorFilter = null
                     }
                 }
             }
@@ -100,12 +98,12 @@ class UserFragment : Fragment(){
     }
     fun requestFollow() {
         //save date to my account
-        var tsDocFollowing = firestore?.collection("uisers")?.document(currentUserUid!!)
+        var tsDocFollowing = firestore?.collection("users")?.document(currentUserUid!!)
         firestore?.runTransaction { transaction ->
             var followDTO = transaction.get(tsDocFollowing!!).toObject(FollowDTO::class.java)
             if (followDTO == null){
                 followDTO = FollowDTO()
-                followDTO!!.followerCount = 1
+                followDTO!!.followingCount = 1
                 followDTO!!.followers[uid!!] = true
 
                 transaction.set(tsDocFollowing,followDTO)
