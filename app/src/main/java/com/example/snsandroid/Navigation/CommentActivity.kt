@@ -19,6 +19,7 @@ import com.example.snsandroid.R
 import com.example.snsandroid.databinding.ActivityCommentBinding
 
 import com.example.snsandroid.databinding.ActivityHomeBinding
+import com.example.snsandroid.model.AlarmDTO
 import com.example.snsandroid.model.ContentDTO
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -32,6 +33,7 @@ import kotlinx.android.synthetic.main.item_comment.view.*
 
 class CommentActivity: AppCompatActivity() {
     var contentUid:String?=null
+    var destinationUid:String?=null
     private lateinit var binding: ActivityCommentBinding
     lateinit var db: FirebaseFirestore
     var commentSnapshot: ListenerRegistration? = null
@@ -41,6 +43,7 @@ class CommentActivity: AppCompatActivity() {
         binding=ActivityCommentBinding.inflate(layoutInflater)
         setContentView(binding.root)
         contentUid=intent.getStringExtra("contentUid")
+        destinationUid= intent.getStringExtra("destinationUid")
         db= Firebase.firestore
 
         comment_recyclerview.adapter = CommentRecyclerViewAdapter()
@@ -54,8 +57,19 @@ class CommentActivity: AppCompatActivity() {
             comment.timestamp=System.currentTimeMillis()
 
             db.collection("images").document(contentUid!!).collection("comments").document().set(comment)
+            commentAlarm(destinationUid!!,binding.commentEditMessage.text.toString())
             binding.commentEditMessage.setText("")
         }
+    }
+    fun commentAlarm(destination:String,message:String){
+        var alarmDTO=AlarmDTO()
+        alarmDTO.destinationUid=destination
+        alarmDTO.userId=Firebase.auth.currentUser?.email
+        alarmDTO.kind = 1
+        alarmDTO.uid=Firebase.auth.currentUser?.uid
+        alarmDTO.timestamp=System.currentTimeMillis()
+        alarmDTO.message=message
+        db.collection("alarms").document().set(alarmDTO)
     }
     @SuppressLint("NotifyDataSetChanged")
     inner class CommentRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){

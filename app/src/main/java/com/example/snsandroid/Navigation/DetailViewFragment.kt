@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.snsandroid.R
+import com.example.snsandroid.model.AlarmDTO
 import com.example.snsandroid.model.ContentDTO
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -121,6 +122,7 @@ class DetailViewFragment : Fragment(){
             viewholder.detailviewitem_comment_imageview.setOnClickListener{
                 var intent= Intent(activity, CommentActivity::class.java)
                 intent.putExtra("contentUid", contentUidList[position])
+                intent.putExtra("destinationUid",contentDTOs[position].uid)
                 startActivity(intent)
             }
         }
@@ -140,9 +142,19 @@ class DetailViewFragment : Fragment(){
                 }else{
                     contentDTO.favoriteCount = contentDTO.favoriteCount +1
                     contentDTO.favorites[uid!!]=true
+                    favoriteAlarm(contentDTOs[position].uid!!)
                 }
                 transaction.set(tsDoc,contentDTO)
             }
+        }
+        fun favoriteAlarm(destinationUid:String){
+            var alarmDTO=AlarmDTO()
+            alarmDTO.destinationUid=destinationUid
+            alarmDTO.userId=Firebase.auth.currentUser?.email
+            alarmDTO.uid=Firebase.auth.currentUser?.uid
+            alarmDTO.kind=0
+            alarmDTO.timestamp=System.currentTimeMillis()
+            db.collection("alarms").document().set(alarmDTO)
         }
 
     }

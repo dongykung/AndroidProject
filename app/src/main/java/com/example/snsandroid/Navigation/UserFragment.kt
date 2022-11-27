@@ -29,6 +29,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.snsandroid.HomeActivity
 import com.example.snsandroid.MainActivity
 import com.example.snsandroid.R
+import com.example.snsandroid.model.AlarmDTO
 import com.example.snsandroid.model.ContentDTO
 import com.example.snsandroid.model.FollowDTO
 import com.google.android.gms.tasks.Task
@@ -182,6 +183,7 @@ class UserFragment : Fragment(){
 
                 followDTO.followingCount = followDTO.followingCount + 1
                 followDTO.followings[uid!!] = true
+                followerAlarm(uid!!)
 
             }
             transaction.set(tsDocFollowing, followDTO)
@@ -234,15 +236,30 @@ class UserFragment : Fragment(){
             }
 
     }
+
+    fun followerAlarm(destinationUid: String) {
+
+        val alarmDTO = AlarmDTO()
+        alarmDTO.destinationUid = destinationUid
+        alarmDTO.userId = auth?.currentUser!!.email
+        alarmDTO.uid = auth?.currentUser!!.uid
+        alarmDTO.kind = 2
+        alarmDTO.timestamp = System.currentTimeMillis()
+
+        db.collection("alarms").document().set(alarmDTO)
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     inner class UserFragmentRecyclerViewAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>(){
         var contentDTOs:ArrayList<ContentDTO>  = arrayListOf()
+        var contentUidList:ArrayList<String> = arrayListOf()
         init{
             db.collection("images").whereEqualTo("uid",uid).addSnapshotListener{querySnapshot, firebaseFirestoreException ->
                 if(querySnapshot==null) return@addSnapshotListener
 
                 for(snapshot in querySnapshot.documents){
                     contentDTOs.add(snapshot.toObject(ContentDTO::class.java)!!)
+                    contentUidList.add(snapshot.id)
                 }
                 fragmentView?.account_tv_post_count?.text=contentDTOs.size.toString()
                 notifyDataSetChanged()
@@ -265,6 +282,11 @@ class UserFragment : Fragment(){
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             var imageview=(holder as CustomViewHolder).imageview
             Glide.with(holder.itemView.context).load(contentDTOs[position].imageUrl).apply(RequestOptions().centerCrop()).into(imageview)
+            holder.itemView.setOnClickListener{
+                var intent= Intent(activity, CommentActivity::class.java)
+                intent.putExtra("contentUid",contentUidList[position])
+                startActivity(intent)
+            }
         }
 
         override fun getItemCount(): Int {
