@@ -31,7 +31,7 @@ class UserFragment : Fragment(){
         auth = FirebaseAuth.getInstance()
 
         fragmentView?.account_reyclerview?.adapter = UserFragmentRecyclerViewAdapter()
-        fragmentView?.account_reyclerview?.layoutManager = GridLayoutManager(activity!!,3)
+        fragmentView?.account_reyclerview?.layoutManager = GridLayoutManager(activity,3)
         return fragmentView
     }
     inner class UserFragmentRecyclerViewAdapter :RecyclerView.Adapter<RecyclerView.ViewHolder>(){
