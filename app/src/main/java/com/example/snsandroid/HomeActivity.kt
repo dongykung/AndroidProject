@@ -10,6 +10,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.snsandroid.Navigation.AlarmFragment
+import com.example.snsandroid.Navigation.DetailViewFragment
+import com.example.snsandroid.Navigation.GridFragment
 import com.example.snsandroid.navigation.*
 import com.example.snsandroid.databinding.ActivityAddPhotoBinding
 import com.example.snsandroid.databinding.ActivityHomeBinding
@@ -30,7 +33,7 @@ class HomeActivity: AppCompatActivity() {
         setContentView(binding.root)
 
 
-        val detailViewFragment=DetailViewFragment()
+        val detailViewFragment= DetailViewFragment()
         supportFragmentManager.beginTransaction().replace(R.id.main_content,detailViewFragment).commit()
 
         ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 1)
