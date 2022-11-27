@@ -13,6 +13,7 @@ import com.example.snsandroid.R
 import com.example.snsandroid.model.ContentDTO
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.auth.User
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_detail.view.*
@@ -35,6 +36,8 @@ class DetailViewFragment : Fragment(){
         var contentUidList:ArrayList<String> = arrayListOf()
         init{
             db.collection("images").orderBy("timestamp").addSnapshotListener{ querySnapshot, firebaseFirestoreException ->
+                if(querySnapshot==null) return@addSnapshotListener
+
                 contentDTOs.clear()
                 contentUidList.clear()
                 for(snapshot in querySnapshot!!.documents){
@@ -81,6 +84,14 @@ class DetailViewFragment : Fragment(){
                     viewholder.detailviewitem_favorite_imageview.setImageResource(R.drawable.heart)
             }else{
                 viewholder.detailviewitem_favorite_imageview.setImageResource(R.drawable.love)
+            }
+            viewholder.detailviewitem_profile_image.setOnClickListener{
+                var fragment=UserFragment()
+                var bundle=Bundle()
+                bundle.putString("destinationUid", contentDTOs[position].uid)
+                bundle.putString("userId", contentDTOs[position].userId)
+                fragment.arguments=bundle
+                activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_content,fragment)?.commit()
             }
         }
 

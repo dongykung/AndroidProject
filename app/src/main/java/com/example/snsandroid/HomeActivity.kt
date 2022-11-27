@@ -14,6 +14,8 @@ import com.example.snsandroid.Navigation.*
 import com.example.snsandroid.databinding.ActivityAddPhotoBinding
 import com.example.snsandroid.databinding.ActivityHomeBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 
 class HomeActivity: AppCompatActivity() {
@@ -31,6 +33,7 @@ class HomeActivity: AppCompatActivity() {
 
 
         binding.bottomNavigation.setOnItemSelectedListener {
+             setToolbarDefault()
            when(it.itemId){
                R.id.action_home ->{
                     val detailViewFragment=DetailViewFragment()
@@ -60,6 +63,10 @@ class HomeActivity: AppCompatActivity() {
                }
                R.id.action_account ->{
                    val userFragment=UserFragment()
+                   var bundle=Bundle()
+                   var uid= Firebase.auth.currentUser?.uid
+                   bundle.putString("destinationUid",uid)
+                   userFragment.arguments=bundle
                    supportFragmentManager.beginTransaction().replace(R.id.main_content,userFragment).commit()
                    return@setOnItemSelectedListener true
                }
@@ -71,7 +78,7 @@ class HomeActivity: AppCompatActivity() {
         }
 
     fun setToolbarDefault() {
-        binding.toolbarTitleImage.visibility = View.GONE
+        binding.toolbarTitleImage.visibility = View.VISIBLE
         binding.toolbarBtnBack.visibility = View.GONE
         binding.toolbarUsername.visibility = View.GONE
     }
