@@ -20,6 +20,7 @@ import com.example.snsandroid.navigation.UserFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.activity_home.*
 
 
 class HomeActivity: AppCompatActivity() {
@@ -81,9 +82,9 @@ class HomeActivity: AppCompatActivity() {
     }
 
     fun setToolbarDefault() {
-        binding.toolbarTitleImage.visibility = View.GONE
-        binding.toolbarBtnBack.visibility = View.GONE
-        binding.toolbarUsername.visibility = View.GONE
+        toolbar_username.visibility = View.GONE
+        toolbar_btn_back.visibility = View.GONE
+        toolbar_title_image.visibility = View.VISIBLE
     }
 
 }
