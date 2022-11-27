@@ -110,11 +110,9 @@ class UserFragment : Fragment(){
                 return@runTransaction
             }
             if(followDTO.followings.containsKey(uid)){
-                //It remove following third person when a third person follow me
                 followDTO?.followingCount = followDTO?.followingCount - 1
-                followDTO?.followers?.remove(uid)
+                followDTO?.followers.remove(uid)
             }else{
-                //It add following third person when a third person follow me
                 followDTO?.followingCount = followDTO?.followingCount + 1
                 followDTO?.followers[uid!!] = true
             }
