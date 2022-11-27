@@ -40,7 +40,7 @@
             android:id="@+id/detailviewitem_favorite_imageview"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            app:srcCompat="@drawable/heart" />
+            app:srcCompat="@drawable/love" />
         <ImageView
             android:id="@+id/detailviewitem_comment_imageview"
             android:layout_width="35dp"

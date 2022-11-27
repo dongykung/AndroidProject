@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.snsandroid">
-
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,13 +10,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".CommentActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -30,7 +21,7 @@
         </activity>
         <activity android:name=".HomeActivity" />
         <activity android:name=".SignupActivity" />
-        <activity android:name=".navigation.AddPhotoAcitivty" />
+        <activity android:name=".Navigation.AddPhotoAcitivty" />
     </application>
 
 </manifest>

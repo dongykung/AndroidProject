@@ -1,4 +1,4 @@
-package com.example.snsandroid.navigation
+package com.example.snsandroid.Navigation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import com.example.snsandroid.R
 
 class AlarmFragment : Fragment(){
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-       var view = LayoutInflater.from(activity).inflate(R.layout.fragment_detail,container,false)
-        return super.onCreateView(inflater, container, savedInstanceState)
+      var view=LayoutInflater.from(activity).inflate(R.layout.fragment_detail,container,false)
+        return view
     }
 }

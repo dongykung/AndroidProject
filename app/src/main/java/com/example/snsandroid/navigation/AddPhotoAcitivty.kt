@@ -1,4 +1,4 @@
-package com.example.snsandroid.navigation
+package com.example.snsandroid.Navigation
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -42,7 +42,7 @@ class AddPhotoAcitivty : AppCompatActivity() {
         val filterActivityLauncher: ActivityResultLauncher<Intent> =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 if(it.resultCode == RESULT_OK && it.data !=null) {
-                    photoUri = it.data?.data
+                     photoUri = it.data?.data
                     try {
                         photoUri?.let {
                             if(Build.VERSION.SDK_INT < 28) {
@@ -68,14 +68,14 @@ class AddPhotoAcitivty : AppCompatActivity() {
                     Log.d("ActivityResult","something wrong")
                 }
             }
-        binding.addphotoImage.setOnClickListener{
-            val intent = Intent(Intent.ACTION_GET_CONTENT)
-            intent.setType("image/*")
-            filterActivityLauncher.launch(intent)
-        }
-        binding.addphotoBtnUpload.setOnClickListener{
-            uploadContent()
-        }
+    binding.addphotoImage.setOnClickListener{
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.setType("image/*")
+        filterActivityLauncher.launch(intent)
+    }
+    binding.addphotoBtnUpload.setOnClickListener{
+        uploadContent()
+    }
     }
 
     @SuppressLint("SimpleDateFormat")
