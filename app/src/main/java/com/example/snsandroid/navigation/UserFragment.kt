@@ -1,6 +1,7 @@
 package com.example.snsandroid.Navigation
 
 import android.annotation.SuppressLint
+import android.app.ActivityOptions
 import android.content.Intent
 import android.graphics.ImageDecoder
 import android.graphics.PorterDuff
@@ -28,7 +29,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.snsandroid.HomeActivity
 import com.example.snsandroid.MainActivity
 import com.example.snsandroid.R
-import com.example.snsandroid.model.AlarmDTO
 import com.example.snsandroid.model.ContentDTO
 import com.example.snsandroid.model.FollowDTO
 import com.google.android.gms.tasks.Task
@@ -54,6 +54,7 @@ class UserFragment : Fragment(){
     }
     var followListenerRegistration: ListenerRegistration? = null
     var followingListenerRegistration: ListenerRegistration? = null
+    var imageprofileListenerRegistration: ListenerRegistration? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         fragmentView= LayoutInflater.from(activity).inflate(R.layout.fragment_user,container,false)
         db= Firebase.firestore
@@ -69,7 +70,7 @@ class UserFragment : Fragment(){
                     var uid=FirebaseAuth.getInstance().currentUser?.uid
                     var stoargeRef=FirebaseStorage.getInstance().reference.child("userprofileImages").child(uid!!)
                     stoargeRef.putFile(photoUri!!).continueWithTask{ task: Task<UploadTask.TaskSnapshot> ->
-                            return@continueWithTask stoargeRef.downloadUrl
+                        return@continueWithTask stoargeRef.downloadUrl
                     }.addOnSuccessListener { uri->
                         var map=HashMap<String,Any>()
                         map["image"]=uri.toString()
@@ -97,15 +98,16 @@ class UserFragment : Fragment(){
             }
         }
         else{
-                fragmentView?.account_btn_follow_signout?.text=context?.getString(R.string.follow)
-                var mainactivity=(activity as HomeActivity)
-                mainactivity.toolbar_username?.text=arguments?.getString("userId")
-                mainactivity.toolbar_btn_back?.setOnClickListener{
-                    mainactivity.bottom_navigation.selectedItemId=R.id.action_home
-                }
+            fragmentView?.account_btn_follow_signout?.text=context?.getString(R.string.follow)
+            var mainactivity=(activity as HomeActivity)
+            mainactivity.toolbar_username?.text=arguments?.getString("userId")
+            mainactivity.toolbar_btn_back?.setOnClickListener{
+                mainactivity.bottom_navigation.selectedItemId=R.id.action_home
+            }
             mainactivity.toolbar_title_image.visibility=View.GONE
             mainactivity.toolbar_username.visibility=View.VISIBLE
             mainactivity.toolbar_btn_back.visibility=View.VISIBLE
+
             fragmentView?.account_btn_follow_signout?.setOnClickListener{
                 requestFollow()
             }
@@ -128,7 +130,7 @@ class UserFragment : Fragment(){
             fragmentView!!.account_tv_following_count.text = followDTO?.followingCount.toString()
         }
     }
-     fun getFollower() {
+    fun getFollower() {
 
         followListenerRegistration = db.collection("users")?.document(uid!!).addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
             val followDTO = documentSnapshot?.toObject(FollowDTO::class.java)
@@ -194,7 +196,7 @@ class UserFragment : Fragment(){
                 followDTO = FollowDTO()
                 followDTO!!.followerCount = 1
                 followDTO!!.followers[currentUserUid!!] = true
-                followerAlarm(uid!!)
+
 
                 transaction.set(tsDocFollower, followDTO!!)
                 return@runTransaction
@@ -209,7 +211,6 @@ class UserFragment : Fragment(){
 
                 followDTO!!.followerCount = followDTO!!.followerCount + 1
                 followDTO!!.followers[currentUserUid!!] = true
-                followerAlarm(uid!!)
 
             }// Star the post and add self to stars
 
@@ -218,24 +219,18 @@ class UserFragment : Fragment(){
         }
 
     }
-    fun followerAlarm(detinationUid : String){
-        var alarmDTO = AlarmDTO()
-        alarmDTO.destinationUid =detinationUid
-        alarmDTO.userId = Firebase.auth.currentUser?.email
-        alarmDTO.uid = Firebase.auth.currentUser?.uid
-        alarmDTO.kind = 2
-        alarmDTO.timestamp = System.currentTimeMillis()
-        Firebase.firestore.collection("alarms").document().set(alarmDTO)
+    fun getProfileImage() {
+        imageprofileListenerRegistration = db.collection("profileImages").document(uid!!)
+            .addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
 
-    }
-    fun getProfileImage(){
-        db.collection("profileImages")?.document(uid!!).addSnapshotListener{   documentSnapshot,firebaseFirestoreException->
-            if(documentSnapshot==null) return@addSnapshotListener
-            if(documentSnapshot.data!=null){
-                var url=documentSnapshot.data!!["image"]
-                Glide.with(requireActivity()).load(url).apply(RequestOptions().circleCrop()).into(fragmentView?.account_iv_profile!!)
+                if (documentSnapshot?.data != null) {
+                    val url = documentSnapshot?.data!!["image"]
+                    Glide.with(requireActivity())
+                        .load(url)
+                        .apply(RequestOptions().circleCrop()).into(fragmentView!!.account_iv_profile)
+                }
             }
-        }
+
     }
     @SuppressLint("NotifyDataSetChanged")
     inner class UserFragmentRecyclerViewAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>(){
@@ -254,10 +249,10 @@ class UserFragment : Fragment(){
 
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-                var width=resources.displayMetrics.widthPixels /3
-                var imageview= ImageView(parent.context)
-                imageview.layoutParams=LinearLayoutCompat.LayoutParams(width,width)
-                return CustomViewHolder(imageview)
+            var width=resources.displayMetrics.widthPixels /3
+            var imageview= ImageView(parent.context)
+            imageview.layoutParams=LinearLayoutCompat.LayoutParams(width,width)
+            return CustomViewHolder(imageview)
         }
 
         inner class CustomViewHolder(var imageview: ImageView) : RecyclerView.ViewHolder(imageview) {
@@ -271,7 +266,7 @@ class UserFragment : Fragment(){
         }
 
         override fun getItemCount(): Int {
-           return contentDTOs.size
+            return contentDTOs.size
         }
 
     }
