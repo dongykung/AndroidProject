@@ -1,6 +1,7 @@
 package com.example.snsandroid.Navigation
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.snsandroid.R
+import com.example.snsandroid.model.AlarmDTO
 import com.example.snsandroid.model.ContentDTO
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -93,6 +95,12 @@ class DetailViewFragment : Fragment(){
                 fragment.arguments=bundle
                 activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_content,fragment)?.commit()
             }
+            viewholder.detailviewitem_comment_imageview.setOnClickListener { v->
+                var intent = Intent(v.context,CommentActivity::class.java)
+                intent.putExtra("contentUid",contentUidList[position])
+                startActivity(intent)
+            }
+
         }
 
         override fun getItemCount(): Int {
