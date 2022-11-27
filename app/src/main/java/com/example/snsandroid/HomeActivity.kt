@@ -38,6 +38,7 @@ class HomeActivity: AppCompatActivity() {
 
 
         binding.bottomNavigation.setOnItemSelectedListener {
+            setToolbarDefault()
             when(it.itemId){
                 R.id.action_home ->{
                     val detailViewFragment= DetailViewFragment()
