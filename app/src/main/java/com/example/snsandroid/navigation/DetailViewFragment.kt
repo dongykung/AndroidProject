@@ -60,30 +60,40 @@ class DetailViewFragment : Fragment(){
 
         @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            var viewholder=(holder as CustomViewHolder).itemView
+            var viewholder = (holder as CustomViewHolder).itemView
             //userid
-            viewholder.detailviewitem_profile_textview.text=contentDTOs!![position].userId
+            viewholder.detailviewitem_profile_textview.text = contentDTOs!![position].userId
             //image
-            Glide.with(holder.itemView.context).load(contentDTOs!![position].imageUrl).into(viewholder.detailviewitem_imageview_content)
+            Glide.with(holder.itemView.context).load(contentDTOs!![position].imageUrl)
+                .into(viewholder.detailviewitem_imageview_content)
             //ex content
-            viewholder.detailviewitem_explain_textview.text=contentDTOs!![position].explain
+            viewholder.detailviewitem_explain_textview.text = contentDTOs!![position].explain
             //좋아요
-            viewholder.detailviewitem_favoritecounter_textview.text="좋아요 "+contentDTOs!![position].favoriteCount
+            viewholder.detailviewitem_favoritecounter_textview.text =
+                "좋아요 " + contentDTOs!![position].favoriteCount
             //프로필 이미지
-            Glide.with(holder.itemView.context).load(contentDTOs!![position].imageUrl).into(viewholder.detailviewitem_profile_image)
+            Glide.with(holder.itemView.context).load(contentDTOs!![position].imageUrl)
+                .into(viewholder.detailviewitem_profile_image)
             //좋아요 클릭 리스너
-            viewholder.detailviewitem_favorite_imageview.setOnClickListener{
+            viewholder.detailviewitem_favorite_imageview.setOnClickListener {
                 favorite(position)
             }
 
             //좋아요 하트
-            if(contentDTOs!![position].favorites.containsKey(uid)){
+            if (contentDTOs!![position].favorites.containsKey(uid)) {
                 viewholder.detailviewitem_favorite_imageview.setImageResource(R.drawable.heart)
-            }else{
+            } else {
                 viewholder.detailviewitem_favorite_imageview.setImageResource(R.drawable.love)
             }
+            viewholder.detailviewitem_profile_image.setOnClickListener {
+                var fragment = UserFragment()
+                var bundle = Bundle()
+                bundle.putString("destinationUid", contentDTOs[position].uid)
+                bundle.putString("userId", contentDTOs[position].userId)
+                fragment.arguments = bundle
+                activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_content,fragment)?.commit()
+            }
         }
-
         override fun getItemCount(): Int {
             return contentDTOs.size
         }
