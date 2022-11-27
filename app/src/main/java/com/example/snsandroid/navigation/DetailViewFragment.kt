@@ -98,6 +98,7 @@ class DetailViewFragment : Fragment(){
             viewholder.detailviewitem_comment_imageview.setOnClickListener { v->
                 var intent = Intent(v.context,CommentActivity::class.java)
                 intent.putExtra("contentUid",contentUidList[position])
+                intent.putExtra("detinationUid",contentDTOs[position].uid)
                 startActivity(intent)
             }
 
@@ -118,9 +119,19 @@ class DetailViewFragment : Fragment(){
                 }else{
                     contentDTO.favoriteCount = contentDTO.favoriteCount +1
                     contentDTO.favorites[uid!!]=true
+                    favoriteAlarm(contentDTOs[position].uid!!)
                 }
                 transaction.set(tsDoc,contentDTO)
             }
+        }
+        fun favoriteAlarm(destinationUid : String){
+            var alarmDTO = AlarmDTO()
+            alarmDTO.destinationUid = destinationUid
+            alarmDTO.userId = Firebase.auth.currentUser?.email
+            alarmDTO.uid = Firebase.auth.currentUser?.uid
+            alarmDTO.kind = 0
+            alarmDTO.timestamp = System.currentTimeMillis()
+            Firebase.firestore.collection("alarms").document().set(alarmDTO)
         }
 
     }

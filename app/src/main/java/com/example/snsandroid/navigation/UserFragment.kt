@@ -28,6 +28,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.snsandroid.HomeActivity
 import com.example.snsandroid.MainActivity
 import com.example.snsandroid.R
+import com.example.snsandroid.model.AlarmDTO
 import com.example.snsandroid.model.ContentDTO
 import com.example.snsandroid.model.FollowDTO
 import com.google.android.gms.tasks.Task
@@ -193,7 +194,7 @@ class UserFragment : Fragment(){
                 followDTO = FollowDTO()
                 followDTO!!.followerCount = 1
                 followDTO!!.followers[currentUserUid!!] = true
-
+                followerAlarm(uid!!)
 
                 transaction.set(tsDocFollower, followDTO!!)
                 return@runTransaction
@@ -208,12 +209,23 @@ class UserFragment : Fragment(){
 
                 followDTO!!.followerCount = followDTO!!.followerCount + 1
                 followDTO!!.followers[currentUserUid!!] = true
+                followerAlarm(uid!!)
 
             }// Star the post and add self to stars
 
             transaction.set(tsDocFollower, followDTO!!)
             return@runTransaction
         }
+
+    }
+    fun followerAlarm(detinationUid : String){
+        var alarmDTO = AlarmDTO()
+        alarmDTO.destinationUid =detinationUid
+        alarmDTO.userId = Firebase.auth.currentUser?.email
+        alarmDTO.uid = Firebase.auth.currentUser?.uid
+        alarmDTO.kind = 2
+        alarmDTO.timestamp = System.currentTimeMillis()
+        Firebase.firestore.collection("alarms").document().set(alarmDTO)
 
     }
     fun getProfileImage(){
