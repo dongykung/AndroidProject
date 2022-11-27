@@ -1,6 +1,7 @@
 package com.example.snsandroid.Navigation
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,10 +10,12 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.snsandroid.R
 import com.example.snsandroid.model.ContentDTO
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.auth.User
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -22,6 +25,7 @@ import kotlinx.android.synthetic.main.item_detail.view.*
 class DetailViewFragment : Fragment(){
     lateinit var db: FirebaseFirestore
     var uid:String?=null
+    var title:String?=null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view= LayoutInflater.from(activity).inflate(R.layout.fragment_detail,container,false)
         db= Firebase.firestore
@@ -34,8 +38,9 @@ class DetailViewFragment : Fragment(){
     inner class DetailViewRecyclerViewAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>(){
         var contentDTOs:ArrayList<ContentDTO>  = arrayListOf()
         var contentUidList:ArrayList<String> = arrayListOf()
+        var contentUserList:ArrayList<String> = arrayListOf()
         init{
-            db.collection("images").orderBy("timestamp").addSnapshotListener{ querySnapshot, firebaseFirestoreException ->
+            db.collection("images").orderBy("timestamp", Query.Direction.DESCENDING).addSnapshotListener{ querySnapshot, firebaseFirestoreException ->
                 if(querySnapshot==null) return@addSnapshotListener
 
                 contentDTOs.clear()
@@ -47,7 +52,14 @@ class DetailViewFragment : Fragment(){
                 }
                 notifyDataSetChanged()
             }
-
+        db.collection("users").addSnapshotListener{querySnapshot, firebaseFirestoreException ->
+            if(querySnapshot==null) return@addSnapshotListener
+            contentUserList.clear()
+            for(snapshot in querySnapshot!!.documents){
+                contentUserList.add(snapshot.id)
+            }
+            notifyDataSetChanged()
+        }
 
 
         }
@@ -73,7 +85,19 @@ class DetailViewFragment : Fragment(){
             //좋아요
             viewholder.detailviewitem_favoritecounter_textview.text="좋아요 "+contentDTOs!![position].favoriteCount
             //프로필 이미지
-            Glide.with(holder.itemView.context).load(contentDTOs!![position].imageUrl).into(viewholder.detailviewitem_profile_image)
+
+
+            db.collection("profileImages").document(contentDTOs[position].uid!!)
+                .get().addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+
+                        val url = task.result["image"]
+                        Glide.with(holder.itemView.context)
+                            .load(url)
+                            .apply(RequestOptions().circleCrop()).into(viewholder.detailviewitem_profile_image)
+
+                    }
+                }
             //좋아요 클릭 리스너
             viewholder.detailviewitem_favorite_imageview.setOnClickListener{
                 favorite(position)
@@ -92,6 +116,12 @@ class DetailViewFragment : Fragment(){
                 bundle.putString("userId", contentDTOs[position].userId)
                 fragment.arguments=bundle
                 activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_content,fragment)?.commit()
+            }
+
+            viewholder.detailviewitem_comment_imageview.setOnClickListener{
+                var intent= Intent(activity, CommentActivity::class.java)
+                intent.putExtra("contentUid", contentUidList[position])
+                startActivity(intent)
             }
         }
 
