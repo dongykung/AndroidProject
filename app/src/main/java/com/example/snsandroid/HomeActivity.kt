@@ -14,7 +14,6 @@ import com.example.snsandroid.databinding.ActivityHomeBinding
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-
 class HomeActivity: AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
     override fun onCreate(savedInstanceState: Bundle?) {
