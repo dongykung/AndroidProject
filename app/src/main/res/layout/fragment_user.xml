@@ -29,7 +29,8 @@
             android:layout_alignParentBottom="true"
             android:layout_toRightOf="@id/account_iv_profile"
             android:text="@string/follow"
-            android:theme="@style/ButtonStyle" />
+            android:background="@drawable/btn_ripple_effect"
+            android:theme="@style/ButtonStyle2" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

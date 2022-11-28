@@ -12,5 +12,10 @@
     <style name="ButtonStyle" parent="Widget.AppCompat.Button.Colored">
         <item name="colorButtonNormal">@color/colorLightGray</item>
     </style>
-
+    <style name="ButtonStyle2" parent="Widget.AppCompat.Button.Colored">
+        <item name="colorButtonNormal">@color/dongkyungcolor</item>
+    </style>
+    <style name="AppTheme.BlueRipple">
+        <item name="colorControlHighlight">#0000ff</item>
+    </style>
 </resources>
